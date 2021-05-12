@@ -7,7 +7,7 @@ import 'post.dart';
 import 'database.dart';
 
 class MyHomePage extends StatefulWidget {
-  final FirebaseUser user;
+  final User user;
   MyHomePage(this.user);
 
   @override
@@ -18,7 +18,7 @@ class _MyHomePageState extends State<MyHomePage> {
   List<Post> posts = [];
 
   void newPost(String text) {
-    var post = new Post(text, widget.user.displayName);
+    var post = new Post(text, widget.user.username);
     post.setId(savePost(post));
     this.setState(() {
       posts.add(post);
@@ -41,8 +41,8 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return MyScaffold(
-      widget.user,
+    return MyTemplate(
+      user: widget.user,
       title: "Home Page",
       body: Column(
         children: <Widget>[
@@ -54,18 +54,18 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 }
 
-class MyScaffold extends StatefulWidget {
-  final FirebaseUser user;
+class MyTemplate extends StatefulWidget {
+  final User user;
   final String title;
   final Widget body;
 
-  MyScaffold(this.user, {this.title = "", this.body});
+  MyTemplate({this.user, this.title = "", this.body});
 
   @override
-  _MyScaffoldState createState() => _MyScaffoldState();
+  _MyTemplateState createState() => _MyTemplateState();
 }
 
-class _MyScaffoldState extends State<MyScaffold> {
+class _MyTemplateState extends State<MyTemplate> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(

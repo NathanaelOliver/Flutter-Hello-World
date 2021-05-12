@@ -1,10 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'profile_page.dart';
 import 'package:flutter/material.dart';
 import 'post.dart';
 
 class PostList extends StatefulWidget {
   final List<Post> listItems;
-  final FirebaseUser user;
+  final User user;
 
   PostList(this.listItems, this.user);
 
@@ -37,8 +38,9 @@ class _PostListState extends State<PostList> {
                   padding: EdgeInsets.fromLTRB(0, 0, 10, 0)),
               IconButton(
                   icon: Icon(Icons.thumb_up),
-                  onPressed: () => this.like(() => post.likePost(widget.user)),
-                  color: post.usersLiked.contains(widget.user.uid)
+                  onPressed: () =>
+                      this.like(() => post.likePost(widget.user.fUser)),
+                  color: post.usersLiked.contains(widget.user.id)
                       ? Colors.blue
                       : Colors.black)
             ])
