@@ -1,4 +1,4 @@
-import 'package:firebase_auth/firebase_auth.dart';
+import 'auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'database.dart';
 
@@ -10,11 +10,11 @@ class Post {
 
   Post(this.body, this.author);
 
-  void likePost(FirebaseUser user) {
-    if (this.usersLiked.contains(user.uid)) {
-      this.usersLiked.remove(user.uid);
+  void likePost(User user) {
+    if (this.usersLiked.contains(user.id)) {
+      this.usersLiked.remove(user.id);
     } else {
-      this.usersLiked.add(user.uid);
+      this.usersLiked.add(user.id);
     }
     this.update();
   }
@@ -42,12 +42,8 @@ Post createPost(value) {
     'usersLiked': [],
     'body': ""
   };
-
   value.forEach((key, value) => {attributes[key] = value});
-
   Post post = new Post(attributes['body'], attributes['author']);
-
   post.usersLiked = new Set.from(attributes['usersLiked']);
-
   return post;
 }

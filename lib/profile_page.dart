@@ -1,7 +1,6 @@
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_database/firebase_database.dart';
-import 'my_home_page.dart';
 import "package:flutter/material.dart";
+import 'auth.dart';
+import 'my_home_page.dart';
 
 class ProfilePage extends StatefulWidget {
   final User user;
@@ -25,15 +24,4 @@ class _ProfilePageState extends State<ProfilePage> {
 void loadProfilePage(context, User user) {
   Navigator.push(
       context, MaterialPageRoute(builder: (context) => ProfilePage(user)));
-}
-
-class User {
-  FirebaseUser fUser;
-  String username;
-  String id;
-
-  User(this.fUser) {
-    username = this.fUser.displayName;
-    id = this.fUser.uid;
-  }
 }

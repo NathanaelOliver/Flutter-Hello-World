@@ -1,10 +1,10 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:hello_world/profile_page.dart';
+import 'auth.dart';
 import 'post_list.dart';
 import 'text_input_widget.dart';
 import 'post.dart';
 import 'database.dart';
+import 'profile_page.dart';
 
 class MyHomePage extends StatefulWidget {
   final User user;
