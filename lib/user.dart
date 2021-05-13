@@ -11,9 +11,9 @@ class User {
 
   User(this.username, this.id);
 
-  User.fromDatabase(DataSnapshot snapshot) {
+  User.fromDatabase(String uid, DataSnapshot snapshot) {
     username = snapshot.value['username'];
-    id = snapshot.value['id'];
+    id = uid;
   }
 
   User.fromFirebaseUser(FirebaseUser fUser) {
@@ -61,7 +61,7 @@ Future<User> signInWithGoogle() async {
     return User.fromFirebaseUser(user);
   }
 
-  return User.fromDatabase(dataSnapshot);
+  return User.fromDatabase(user.uid, dataSnapshot);
 }
 
 void signOutGoogle() async {

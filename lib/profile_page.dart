@@ -16,8 +16,12 @@ class _ProfilePageState extends State<ProfilePage> {
     return MyTemplate(
         user: widget.user,
         title: "Profile Page",
-        body: Column(
-            children: <Widget>[Center(child: Text(widget.user.username))]));
+        body: Column(children: <Widget>[
+          Center(child: Text(widget.user.username)),
+          Center(
+            child: Text(widget.user.id),
+          )
+        ]));
   }
 }
 
