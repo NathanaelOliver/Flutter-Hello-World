@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'post.dart';
 import 'user.dart';
 
@@ -45,4 +46,18 @@ class _PostListState extends State<PostList> {
           ]));
         });
   }
+}
+
+Future<List<Post>> getAllPosts() async {
+  DataSnapshot dataSnapshot =
+      await FirebaseDatabase.instance.reference().child('posts/').once();
+  List<Post> posts = [];
+  if (dataSnapshot.value != null) {
+    dataSnapshot.value.forEach((key, value) {
+      Post post = Post.fromDatabase(value);
+      post.setId(FirebaseDatabase.instance.reference().child('posts/' + key));
+      posts.add(post);
+    });
+  }
+  return posts;
 }

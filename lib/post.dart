@@ -1,6 +1,5 @@
 import 'user.dart';
 import 'package:firebase_database/firebase_database.dart';
-import 'database.dart';
 
 class Post {
   String body;
@@ -9,6 +8,14 @@ class Post {
   DatabaseReference _id;
 
   Post(this.body, this.author);
+
+  Post.fromDatabase(value) {
+    this.body = value['body'];
+    this.author = value['author'];
+    if (value['usersLiked'] != null) {
+      this.usersLiked = new Set.from(value['usersLiked']);
+    }
+  }
 
   void likePost(User user) {
     if (this.usersLiked.contains(user.id)) {
@@ -20,7 +27,7 @@ class Post {
   }
 
   void update() {
-    updatePost(this, this._id);
+    this._id.update(this.toJson());
   }
 
   void setId(DatabaseReference id) {
@@ -34,16 +41,10 @@ class Post {
       'body': this.body
     };
   }
-}
 
-Post createPost(value) {
-  Map<String, dynamic> attributes = {
-    'author': "",
-    'usersLiked': [],
-    'body': ""
-  };
-  value.forEach((key, value) => {attributes[key] = value});
-  Post post = new Post(attributes['body'], attributes['author']);
-  post.usersLiked = new Set.from(attributes['usersLiked']);
-  return post;
+  DatabaseReference save() {
+    var id = FirebaseDatabase.instance.reference().child('posts/').push();
+    id.set(this.toJson());
+    return id;
+  }
 }

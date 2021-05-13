@@ -3,7 +3,6 @@ import 'user.dart';
 import 'post_list.dart';
 import 'text_input_widget.dart';
 import 'post.dart';
-import 'database.dart';
 import 'template.dart';
 
 class MyHomePage extends StatefulWidget {
@@ -19,7 +18,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void newPost(String text) {
     var post = new Post(text, widget.user.username);
-    post.setId(savePost(post));
+    post.setId(post.save());
     this.setState(() {
       posts.add(post);
     });

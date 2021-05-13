@@ -1,7 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:hello_world/database.dart';
 
 final FirebaseAuth _auth = FirebaseAuth.instance;
 final GoogleSignIn googleSignIn = GoogleSignIn();
@@ -20,11 +19,18 @@ class User {
   User.fromFirebaseUser(FirebaseUser fUser) {
     username = fUser.displayName;
     id = fUser.uid;
-    saveUser(this);
+    saveUser();
   }
 
   Map<String, dynamic> toJson() {
-    return {'username': this.username, 'id': id};
+    return {'username': this.username};
+  }
+
+  DatabaseReference saveUser() {
+    var id =
+        FirebaseDatabase.instance.reference().child('users/').child(this.id);
+    id.set(this.toJson());
+    return id;
   }
 }
 
