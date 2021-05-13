@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'auth.dart';
+import 'user.dart';
 import 'post_list.dart';
 import 'text_input_widget.dart';
 import 'post.dart';
 import 'database.dart';
-import 'profile_page.dart';
+import 'template.dart';
 
 class MyHomePage extends StatefulWidget {
   final User user;
@@ -50,44 +50,6 @@ class _MyHomePageState extends State<MyHomePage> {
           TextInputWidget(this.newPost),
         ],
       ),
-    );
-  }
-}
-
-class MyTemplate extends StatefulWidget {
-  final User user;
-  final String title;
-  final Widget body;
-
-  MyTemplate({this.user, this.title = "", this.body});
-
-  @override
-  _MyTemplateState createState() => _MyTemplateState();
-}
-
-class _MyTemplateState extends State<MyTemplate> {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
-      drawer: Drawer(
-          child: ListView(padding: EdgeInsets.zero, children: <Widget>[
-        DrawerHeader(
-          child: Center(
-              child: Text(
-            "Settings",
-            style: TextStyle(color: Colors.white, fontSize: 36),
-          )),
-          decoration: BoxDecoration(color: Colors.blue),
-        ),
-        ListTile(
-          title: Text("Profile Page"),
-          onTap: () => loadProfilePage(context, widget.user),
-        ),
-      ])),
-      body: widget.body,
     );
   }
 }

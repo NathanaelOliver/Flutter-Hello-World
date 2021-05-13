@@ -4,6 +4,22 @@ import 'package:google_sign_in/google_sign_in.dart';
 final FirebaseAuth _auth = FirebaseAuth.instance;
 final GoogleSignIn googleSignIn = GoogleSignIn();
 
+class User {
+  String username;
+  String id;
+
+  User(this.username, this.id);
+
+  User.fromFirebaseUser(FirebaseUser fUser) {
+    username = fUser.displayName;
+    id = fUser.uid;
+  }
+
+  Map<String, dynamic> toJson() {
+    return {'username': this.username, 'id': id};
+  }
+}
+
 Future<User> signInWithGoogle() async {
   final GoogleSignInAccount googleSignInAccount = await googleSignIn.signIn();
   final GoogleSignInAuthentication googleSignInAuthentication =
@@ -22,20 +38,9 @@ Future<User> signInWithGoogle() async {
   final FirebaseUser currentUser = await _auth.currentUser();
   assert(currentUser.uid == user.uid);
 
-  return User(user);
+  return User.fromFirebaseUser(user);
 }
 
 void signOutGoogle() async {
   await googleSignIn.signOut();
-}
-
-class User {
-  FirebaseUser fUser;
-  String username;
-  String id;
-
-  User(this.fUser) {
-    username = this.fUser.displayName;
-    id = this.fUser.uid;
-  }
 }

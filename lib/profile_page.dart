@@ -1,6 +1,6 @@
 import "package:flutter/material.dart";
-import 'auth.dart';
-import 'my_home_page.dart';
+import 'user.dart';
+import 'template.dart';
 
 class ProfilePage extends StatefulWidget {
   final User user;

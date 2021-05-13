@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'post.dart';
-import 'auth.dart';
+import 'user.dart';
 
 class PostList extends StatefulWidget {
   final List<Post> listItems;
