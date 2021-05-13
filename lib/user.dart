@@ -1,5 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:hello_world/database.dart';
 
 final FirebaseAuth _auth = FirebaseAuth.instance;
 final GoogleSignIn googleSignIn = GoogleSignIn();
@@ -10,9 +12,15 @@ class User {
 
   User(this.username, this.id);
 
+  User.fromDatabase(DataSnapshot snapshot) {
+    username = snapshot.value['username'];
+    id = snapshot.value['id'];
+  }
+
   User.fromFirebaseUser(FirebaseUser fUser) {
     username = fUser.displayName;
     id = fUser.uid;
+    saveUser(this);
   }
 
   Map<String, dynamic> toJson() {
@@ -38,7 +46,16 @@ Future<User> signInWithGoogle() async {
   final FirebaseUser currentUser = await _auth.currentUser();
   assert(currentUser.uid == user.uid);
 
-  return User.fromFirebaseUser(user);
+  DataSnapshot dataSnapshot = await FirebaseDatabase.instance
+      .reference()
+      .child('users/')
+      .child(user.uid)
+      .once();
+  if (dataSnapshot.value == null) {
+    return User.fromFirebaseUser(user);
+  }
+
+  return User.fromDatabase(dataSnapshot);
 }
 
 void signOutGoogle() async {

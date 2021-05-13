@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:hello_world/user.dart';
-import 'package:hello_world/my_home_page.dart';
+import 'user.dart';
+import 'my_home_page.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -16,7 +16,7 @@ class _LoginPageState extends State<LoginPage> {
     signOutGoogle();
   }
 
-  void click() {
+  void login() {
     signInWithGoogle().then((user) => {
           this.user = user,
           Navigator.push(context,
@@ -45,7 +45,7 @@ class _LoginPageState extends State<LoginPage> {
                                     color: Colors.grey, fontSize: 25)),
                           )
                         ])),
-                onPressed: this.click)));
+                onPressed: this.login)));
   }
 
   @override
