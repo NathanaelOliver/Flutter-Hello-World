@@ -5,6 +5,7 @@ class Post {
   String body;
   String author;
   Set usersLiked = {};
+  Set usersDisliked = {};
   DatabaseReference _id;
 
   Post(this.body, this.author);
@@ -15,15 +16,32 @@ class Post {
     if (value['usersLiked'] != null) {
       this.usersLiked = new Set.from(value['usersLiked']);
     }
+    if (value['usersDisliked'] != null) {
+      this.usersDisliked = new Set.from(value['usersDisliked']);
+    }
   }
 
   void likePost(User user) {
     if (this.usersLiked.contains(user.id)) {
       this.usersLiked.remove(user.id);
     } else {
+      if (this.usersDisliked.contains(user.id)) {
+        this.usersDisliked.remove(user.id);
+      }
       this.usersLiked.add(user.id);
     }
     this.update();
+  }
+
+  void dislikePost(User user) {
+    if (this.usersDisliked.contains(user.id)) {
+      this.usersDisliked.remove(user.id);
+    } else {
+      if (this.usersLiked.contains(user.id)) {
+        this.usersLiked.remove(user.id);
+      }
+      this.usersDisliked.add(user.id);
+    }
   }
 
   void update() {
@@ -38,6 +56,7 @@ class Post {
     return {
       'author': this.author,
       'usersLiked': this.usersLiked.toList(),
+      'userdDisliked': this.usersDisliked.toList(),
       'body': this.body
     };
   }

@@ -32,16 +32,34 @@ class _PostListState extends State<PostList> {
                 child: ListTile(
                     title: Text(post.body), subtitle: Text(post.author))),
             Row(children: <Widget>[
-              Container(
+              Column(
+                children: <Widget>[
+                  IconButton(
+                      icon: Icon(Icons.thumb_down),
+                      onPressed: () =>
+                          this.like(() => post.dislikePost(widget.user)),
+                      color: post.usersDisliked.contains(widget.user.id)
+                          ? Colors.blue
+                          : Colors.black),
+                  Center(
+                    child: Text(post.usersDisliked.length.toString(),
+                        style: TextStyle(fontSize: 16)),
+                  )
+                ],
+              ),
+              Column(children: <Widget>[
+                IconButton(
+                    icon: Icon(Icons.thumb_up),
+                    onPressed: () =>
+                        this.like(() => post.likePost(widget.user)),
+                    color: post.usersLiked.contains(widget.user.id)
+                        ? Colors.blue
+                        : Colors.black),
+                Center(
                   child: Text(post.usersLiked.length.toString(),
-                      style: TextStyle(fontSize: 20)),
-                  padding: EdgeInsets.fromLTRB(0, 0, 10, 0)),
-              IconButton(
-                  icon: Icon(Icons.thumb_up),
-                  onPressed: () => this.like(() => post.likePost(widget.user)),
-                  color: post.usersLiked.contains(widget.user.id)
-                      ? Colors.blue
-                      : Colors.black)
+                      style: TextStyle(fontSize: 16)),
+                )
+              ])
             ])
           ]));
         });
