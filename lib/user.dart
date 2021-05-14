@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -8,22 +9,25 @@ final GoogleSignIn googleSignIn = GoogleSignIn();
 class User {
   String username;
   String id;
+  String photoURL;
 
   User(this.username, this.id);
 
   User.fromDatabase(String uid, DataSnapshot snapshot) {
-    username = snapshot.value['username'];
-    id = uid;
+    this.username = snapshot.value['username'];
+    this.id = uid;
+    this.photoURL = snapshot.value['photoURL'];
   }
 
   User.fromFirebaseUser(FirebaseUser fUser) {
-    username = fUser.displayName;
-    id = fUser.uid;
+    this.username = fUser.displayName;
+    this.id = fUser.uid;
+    this.photoURL = fUser.photoUrl;
     saveUser();
   }
 
   Map<String, dynamic> toJson() {
-    return {'username': this.username};
+    return {'username': this.username, 'photoURL': this.photoURL};
   }
 
   DatabaseReference saveUser() {
@@ -31,6 +35,21 @@ class User {
         FirebaseDatabase.instance.reference().child('users/').child(this.id);
     id.set(this.toJson());
     return id;
+  }
+
+  getImage({double size: 100}) {
+    if (this.photoURL != null) {
+      return Container(
+        width: size,
+        height: size,
+        decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            image: DecorationImage(
+                fit: BoxFit.fill, image: NetworkImage(this.photoURL))),
+      );
+    } else {
+      return Icon(Icons.account_circle, size: 100);
+    }
   }
 }
 

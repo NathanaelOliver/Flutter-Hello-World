@@ -17,6 +17,7 @@ class _ProfilePageState extends State<ProfilePage> {
         user: widget.user,
         title: "Profile Page",
         body: Column(children: <Widget>[
+          Center(child: widget.user.getImage()),
           Center(child: Text(widget.user.username)),
           Center(
             child: Text(widget.user.id),
